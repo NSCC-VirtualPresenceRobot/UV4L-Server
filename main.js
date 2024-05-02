@@ -46,8 +46,22 @@
     }
 
     // cmd to the API server, flask
-    function sendCMD(cmd) {
-
+    function sendCMD(key) {
+        fetch('http://127.0.0.1:5000/control', {  // Flask 服务器的地址和端口
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ key: key })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send control command');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     // Map the keyboard
