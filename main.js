@@ -47,7 +47,7 @@
 
     // cmd to the API server, flask
     function sendCMD(key) {
-        fetch('http://127.0.0.1:5000/control', {  // Flask 服务器的地址和端口
+        fetch('http://10.13.233.1:5000/control', {  // Hard code right
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

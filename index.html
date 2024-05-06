@@ -23,15 +23,15 @@
                 display:inline-block;
                 margin:0% auto 2%;
             }
-           video {
-               /* position:absolute;*/
-               /* visibility:hidden;*/
-		border:8px solid #fff;
+            video {
+            /* position:absolute;*/
+            /* visibility:hidden;*/
+                border:8px solid #fff;
             }
-	    #v {
-		width: 100%;
-		max-width: 800px;
-	    }
+            #v {
+                width: 100%;
+                max-width: 800px;
+            }
             /*canvas { border:8px solid #fff;}*/
             button {
                 border:none;
@@ -44,9 +44,9 @@
             }
             button:active { background-color:#e44d26; }
         </style>
-	<script src='adapter.js'></script>
-        <script src='signalling.js'></script>
-        <script src='main.js'></script>
+	    <script src='adapter.js' defer></script>
+        <script src='signalling.js' defer></script>
+        <script src='main.js' defer></script>
 
     </head>
     <body>
@@ -59,7 +59,7 @@
 	    </label>
 
         </div>
-        <video id='v' playsinline autoplay></video>
+        <video id='v' playsinline autoplay controls></video>
 	<div class="control-panel">
 		<button id="up">up</button>
 		<button id="down">down</button>
