@@ -79,9 +79,24 @@
             case 'd':
                 sendCMD('d');
                 break;
+            case 'j':
+                sendCMD('j');
+                break;
+            case 'k':
+                sendCMD('k');
+                break;
+            case 'x':
+                sendCMD('x');
+                break;
             default:
                 break;
         }
+    }
+
+    function handleKeyRelease(event) {
+        // generally, when the key release, robot stop
+        // set the key to 'x', x means stop
+        sendCMD('x');
     }
 
     window.addEventListener('DOMContentLoaded', function () {
@@ -113,6 +128,9 @@
         var btnDown = document.getElementById("down");
         var btnLeft = document.getElementById("left");
         var btnRight = document.getElementById("right");
+        var btnstrafeLeft = document.getElementById("strafeLeft");
+        var btnstrafeRight = document.getElementById("strafeRight");
+        var btnstop = document.getElementById("robotStop");
 
         btnUp.addEventListener('click', function () {
             sendCMD('w');
@@ -130,8 +148,22 @@
             sendCMD('d');
         });
 
+        btnstrafeLeft.addEventListener('click', function () {
+            sendCMD('j');
+        });
+
+        btnstrafeRight.addEventListener('click', function () {
+            sendCMD('k');
+        });
+
+        btnstop.addEventListener('click', function () {
+            sendCMD('x');
+        });
+
         document.addEventListener('keydown', handleKeyPress);
 
+        // when the keyup, stop the robot
+        // document.addEventListener('keyup', handleKeyRelease);
     });
 
 
