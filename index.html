@@ -55,11 +55,13 @@
             <button id='start' title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start Streaming</button>
             <button id='stop'>Stop Streaming</button>
 	    <label>
-		<input type="checkbox" id="remote_hw_vcodec" checked name="remote_hw_vcodec" value="remote_hw_vcodec" title="try to force the use of the hardware codec for both encoding and decoding if enabled and supported">H.264 Codec
+		<input type="checkbox" id="remote_hw_vcodec" name="remote_hw_vcodec" value="remote_hw_vcodec" title="try to force the use of the hardware codec for both encoding and decoding if enabled and supported">H.264 Codec
 	    </label>
 
         </div>
-        <video id='v' playsinline autoplay controls></video>
+        <div class="video"><video id='v' playsinline autoplay controls></video></div>
+        <div class="info"><textarea id="status" rows="4" cols="50" readonly>Distance to obstacle ahead: 10cm</textarea></div>
+        
 	<div class="control-panel">
 		<button id="up">up</button>
 		<button id="down">down</button>
