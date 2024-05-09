@@ -96,12 +96,6 @@
         }
     }
 
-    function handleKeyRelease(event) {
-        // generally, when the key release, robot stop
-        // set the key to 'x', x means stop
-        sendCMD('x');
-    }
-
     window.addEventListener('DOMContentLoaded', function () {
 
         var start = document.getElementById('start');
@@ -163,10 +157,17 @@
             sendCMD('x');
         });
 
-        document.addEventListener('keydown', handleKeyPress);
+
 
         // when the keyup, stop the robot
-        // document.addEventListener('keyup', handleKeyRelease);
+        document.addEventListener('keyup', function (event) {
+            // generally, when the key release, robot stop
+            // set the key to 'x', x means stop
+            sendCMD('x');
+        });
+
+        // need below the keyup event
+        document.addEventListener('keydown', handleKeyPress);
     });
 
 
