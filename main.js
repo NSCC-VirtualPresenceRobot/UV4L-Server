@@ -1,6 +1,7 @@
 (function () {
 
     var signalObj = null;
+    var keysPressed = {}; // track combination keys
 
     function startPlay() {
         if (signalObj)
@@ -69,15 +70,65 @@
 
     // Map the keyboard
     function handleKeyPress(event) {
-        switch (event.key.toLowerCase()) {
+        // 更新按键状态为按下状态
+        keysPressed[event.key.toLowerCase()] = true;
+
+        // 获取同时按下的按键数量
+        var simultaneousKeysPressed = getSimultaneousKeysPressed();
+
+        // 如果同时按下的按键数量大于1，则执行组合按键功能
+        if (simultaneousKeysPressed.length > 1) {
+            handleComboKeys(simultaneousKeysPressed);
+            return;
+        } else {
+            // 否则，执行单个按键功能
+            handleSingleKey(event.key.toLowerCase());
+        }
+    }
+
+    // 获取同时按下的按键数组
+    function getSimultaneousKeysPressed() {
+        return Object.keys(keysPressed).filter(function (key) {
+            return keysPressed[key];
+        });
+    }
+
+    function handleKeyRelease(event) {
+        // 更新按键状态为释放状态
+        keysPressed[event.key.toLowerCase()] = false;
+
+        // 检查同时按下的情况
+        handleComboKeys();
+    }
+
+    function handleComboKeys() {
+        if (keysPressed['w'] && keysPressed['a']) {
+            sendCMD('w+a');
+        } else if (keysPressed['w'] && keysPressed['d']) {
+            sendCMD('w+d');
+        } else if (keysPressed['s'] && keysPressed['a']) {
+            sendCMD('s+a');
+        } else if (keysPressed['s'] && keysPressed['d']) {
+            sendCMD('s+d');
+        } else if (keysPressed['w'] && keysPressed['j']) {
+            sendCMD('w+j');
+        } else if (keysPressed['w'] && keysPressed['k']) {
+            sendCMD('w+k');
+        } else {
+            sendCMD('stop');
+        }
+    }
+
+    function handleSingleKey(key) {
+        switch (key) {
             case 'w':
                 sendCMD('w');
                 break;
-            case 's':
-                sendCMD('s');
-                break;
             case 'a':
                 sendCMD('a');
+                break;
+            case 's':
+                sendCMD('s');
                 break;
             case 'd':
                 sendCMD('d');
@@ -87,9 +138,6 @@
                 break;
             case 'k':
                 sendCMD('k');
-                break;
-            case 'x':
-                sendCMD('x');
                 break;
             default:
                 break;
@@ -158,16 +206,9 @@
         });
 
 
-
-        // when the keyup, stop the robot
-        document.addEventListener('keyup', function (event) {
-            // generally, when the key release, robot stop
-            // set the key to 'x', x means stop
-            sendCMD('x');
-        });
-
-        // need below the keyup event
         document.addEventListener('keydown', handleKeyPress);
+
+        document.addEventListener('keyup', handleKeyRelease);
     });
 
 
