@@ -66,7 +66,7 @@
 
     // Map the keyboard
     function handleKeyPress(event) {
-        switch (event.key) {
+        switch (event.key.toLowerCase()) {
             case 'w':
                 sendCMD('w');
                 break;
