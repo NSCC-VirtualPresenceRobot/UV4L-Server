@@ -47,7 +47,10 @@
 
     // cmd to the API server, flask
     function sendCMD(key) {
-        fetch('http://10.13.233.1:5000/control', {  // Hard code right
+        var hostname = window.location.hostname; // 获取当前页面的主机名
+        var url = `http://${hostname}:5000/control`; // 构建 URL
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
