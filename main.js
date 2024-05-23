@@ -46,17 +46,51 @@
         console.log("Command:", cmd);
     }
 
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, arguments), delay);
+        };
+    }
+
     // cmd to the API server, flask
-    function sendCMD(key) {
+    const sendCMD = debounce((key) => {
+        let route;
+        switch (key) {
+            case 'w':
+                route = 'forward';
+                break;
+            case 's':
+                route = 'backward';
+                break;
+            case 'a':
+                route = 'strafe_left';
+                break;
+            case 'd':
+                route = 'strafe_right';
+                break;
+            case 'j':
+                route = 'turn_left';
+                break;
+            case 'k':
+                route = 'turn_right';
+                break;
+            case 'x':
+                route = 'stop';
+                break;
+            default:
+                break;
+        }
+
         var hostname = window.location.hostname; // 获取当前页面的主机名
-        var url = `http://${hostname}:5000/control`; // 构建 URL
+        var url = `http://${hostname}:5000/${route}`; // 构建 URL
 
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ key: key })
+            }
         })
             .then(response => {
                 if (!response.ok) {
@@ -66,61 +100,12 @@
             .catch(error => {
                 console.error(error);
             });
-    }
+    }, 100); // 500ms debounce time
 
     // Map the keyboard
-    function handleKeyPress(event) {
-        // 更新按键状态为按下状态
-        keysPressed[event.key.toLowerCase()] = true;
 
-        // 获取同时按下的按键数量
-        var simultaneousKeysPressed = getSimultaneousKeysPressed();
-
-        // 如果同时按下的按键数量大于1，则执行组合按键功能
-        if (simultaneousKeysPressed.length > 1) {
-            handleComboKeys(simultaneousKeysPressed);
-            return;
-        } else {
-            // 否则，执行单个按键功能
-            handleSingleKey(event.key.toLowerCase());
-        }
-    }
-
-    // 获取同时按下的按键数组
-    function getSimultaneousKeysPressed() {
-        return Object.keys(keysPressed).filter(function (key) {
-            return keysPressed[key];
-        });
-    }
-
-    function handleKeyRelease(event) {
-        // 更新按键状态为释放状态
-        keysPressed[event.key.toLowerCase()] = false;
-
-        // 检查同时按下的情况
-        handleComboKeys();
-    }
-
-    function handleComboKeys() {
-        if (keysPressed['w'] && keysPressed['a']) {
-            sendCMD('w+a');
-        } else if (keysPressed['w'] && keysPressed['d']) {
-            sendCMD('w+d');
-        } else if (keysPressed['s'] && keysPressed['a']) {
-            sendCMD('s+a');
-        } else if (keysPressed['s'] && keysPressed['d']) {
-            sendCMD('s+d');
-        } else if (keysPressed['w'] && keysPressed['j']) {
-            sendCMD('w+j');
-        } else if (keysPressed['w'] && keysPressed['k']) {
-            sendCMD('w+k');
-        } else {
-            sendCMD('stop');
-        }
-    }
-
-    function handleSingleKey(key) {
-        switch (key) {
+    function handleKeyPress(e) {
+        switch (e.key.toLowerCase()) {
             case 'w':
                 sendCMD('w');
                 break;
@@ -144,9 +129,13 @@
         }
     }
 
+    function handleKeyRelease() {
+        sendCMD('x');
+    }
+
     window.addEventListener('DOMContentLoaded', function () {
 
-        var start = document.getElementById('start');
+        var start = document.getElementById('stream-start');
         if (start) {
             start.addEventListener('click', function (e) {
                 startPlay();
@@ -157,7 +146,7 @@
             startPlay();
         }
 
-        var stop = document.getElementById('stop');
+        var stop = document.getElementById('stream-stop');
         if (stop) {
             stop.addEventListener('click', function (e) {
                 stopPlay();
@@ -173,9 +162,7 @@
         var btnDown = document.getElementById("down");
         var btnLeft = document.getElementById("left");
         var btnRight = document.getElementById("right");
-        var btnstrafeLeft = document.getElementById("strafeLeft");
-        var btnstrafeRight = document.getElementById("strafeRight");
-        var btnstop = document.getElementById("robotStop");
+        var btnstop = document.getElementById("stop");
 
         btnUp.addEventListener('click', function () {
             sendCMD('w');
@@ -191,14 +178,6 @@
 
         btnRight.addEventListener('click', function () {
             sendCMD('d');
-        });
-
-        btnstrafeLeft.addEventListener('click', function () {
-            sendCMD('j');
-        });
-
-        btnstrafeRight.addEventListener('click', function () {
-            sendCMD('k');
         });
 
         btnstop.addEventListener('click', function () {
