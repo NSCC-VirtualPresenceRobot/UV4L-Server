@@ -3,7 +3,7 @@
     <head>
         <meta charset='utf-8' />
         <title>Virtual Presence Robot</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no" />
         <style>
             * {
                 margin:0;
@@ -79,6 +79,21 @@
                 background-image: url('images/btn_arrow.png'); 
                 background-size: cover;
                 transform: rotate(180deg);
+            }
+
+            button#r_left {
+                grid-row: 1;
+                grid-column: 1;
+                background-image: url('images/btn_rotate.png'); 
+                background-size: cover;
+            }
+
+            button#r_right {
+                grid-row: 1;
+                grid-column: 3;
+                background-image: url('images/btn_rotate.png'); 
+                background-size: cover;
+                transform: scaleX(-1);
             }
 
             button#down {
@@ -187,7 +202,9 @@
                 <div class="control-panel">
                     <div class="movement-control">
                         <div class="gamepad">
+                            <button id="r_left"></button>
                             <button id="up"></button>
+                            <button id="r_right"></button>
                             <button id="left"></button>
                             <button id="stop"></button>
                             <button id="right"></button>

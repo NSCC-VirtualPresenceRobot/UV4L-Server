@@ -163,6 +163,8 @@
         var btnLeft = document.getElementById("left");
         var btnRight = document.getElementById("right");
         var btnstop = document.getElementById("stop");
+        var btnRLeft = document.getElementById("r_left");
+        var btnRRight = document.getElementById("r_right");
 
         btnUp.addEventListener('click', function () {
             sendCMD('w');
@@ -182,6 +184,14 @@
 
         btnstop.addEventListener('click', function () {
             sendCMD('x');
+        });
+
+        btnRLeft.addEventListener('click', function () {
+            sendCMD('j');
+        });
+
+        btnRRight.addEventListener('click', function () {
+            sendCMD('k');
         });
 
 
